@@ -2,11 +2,17 @@ import { createContext, useState, useContext } from 'react'
 
 const ResultadosContext = createContext()
 
-export function ResultadosProvider ({ children }) {
+export function ResultadosProvider({ children }) {
   const [resultados, setResultados] = useState({})
 
   const actualizarResultado = (idEncuesta, opcionSeleccionada) => {
-    setResultados(/* Actualizar Resultado */)
+    setResultados(prevResultados => ({
+      ...prevResultados,
+      [idEncuesta]: {
+        ...prevResultados[idEncuesta],
+        [opcionSeleccionada]: (prevResultados[idEncuesta]?.[opcionSeleccionada] || 0) + 1
+      }
+    }))
   }
 
   return (
@@ -17,3 +23,5 @@ export function ResultadosProvider ({ children }) {
 }
 
 export const useResultados = () => useContext(ResultadosContext)
+
+
